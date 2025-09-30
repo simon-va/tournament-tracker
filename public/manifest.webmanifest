@@ -1,6 +1,6 @@
 {
-  "name": "angular-pwa-template",
-  "short_name": "angular-pwa-template",
+  "name": "tournament-tracker",
+  "short_name": "tournament-tracker",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
