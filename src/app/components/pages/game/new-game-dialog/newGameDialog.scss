@@ -1,0 +1,23 @@
+@use "@angular/material" as mat;
+
+:host {
+  min-height: 10rem;
+
+  @include mat.expansion-overrides(
+    (
+      container-background-color: var(--mat-sys-surface-container),
+    )
+  );
+}
+
+.rounds-input {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+  user-select: none;
+}
+
+.example-full-width {
+  width: 100%;
+}

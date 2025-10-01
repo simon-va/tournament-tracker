@@ -1,0 +1,32 @@
+:host {
+  flex-shrink: 0; /* Verhindert Schrumpfen */
+  height: 3.5rem; /* 56px */
+  background: var(--mat-sys-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.nav-item:active {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.nav-item.active {
+  color: #6200ea;
+}
+
+.nav-item-icon {
+  font-size: 1.5rem;
+}
+
+.nav-item-label {
+  font-size: 0.75rem;
+}
