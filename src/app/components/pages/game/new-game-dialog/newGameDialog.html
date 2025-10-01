@@ -11,18 +11,14 @@
           <app-rounds-step [(rounds)]="rounds" (roundsSelected)="nextTab()" />
         </div>
       </mat-tab>
-
       <mat-tab label="Spieler">
         <div class="tab-content">
           <app-players-step
-            [(team1Player1)]="team1Player1"
-            [(team1Player2)]="team1Player2"
-            [(team2Player1)]="team2Player1"
-            [(team2Player2)]="team2Player2"
+            [(team1Players)]="team1Players"
+            [(team2Players)]="team2Players"
           />
         </div>
       </mat-tab>
-
       <mat-tab label="Punkte">
         <div class="tab-content">
           <app-points-step
@@ -35,7 +31,6 @@
     </mat-tab-group>
   </div>
 </mat-dialog-content>
-
 <mat-dialog-actions align="end">
   @if (selectedTab() > 0) {
     <button mat-button (click)="previousTab()">Zurück</button>

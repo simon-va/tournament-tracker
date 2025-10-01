@@ -1,19 +1,18 @@
+// newGameDialog.ts
 import { Component, inject, signal } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import { RoundsStepComponent } from './rounds-step/roundsStep.component';
-import { PlayersStepComponent } from './players-step/playersStep.component';
-import { PointsStepComponent } from './points-step/pointsStep.component';
+import { RoundsStepComponent } from './rounds-step/roundsStep';
+import { PlayersStepComponent } from './players-step/playersStep';
+import { PointsStepComponent } from './points-step/pointsStep';
 
 export interface GameConfig {
   rounds: number;
   points?: number;
   usePointLimit: boolean;
-  team1Player1: string;
-  team1Player2: string;
-  team2Player1: string;
-  team2Player2: string;
+  team1Players: string[];
+  team2Players: string[];
 }
 
 @Component({
@@ -31,7 +30,7 @@ export interface GameConfig {
   styleUrl: './newGameDialog.scss',
 })
 export class NewGameDialogComponent {
-  private dialogRef = inject(MatDialogRef<NewGameDialogComponent>);
+  private dialogRef = inject(MatDialogRef<NewGameDialogComponent, GameConfig>);
 
   selectedTab = signal(0);
 
@@ -39,10 +38,8 @@ export class NewGameDialogComponent {
   rounds = signal(1);
   points = signal(1);
   usePointsLimit = signal(true);
-  team1Player1 = signal('');
-  team1Player2 = signal('');
-  team2Player1 = signal('');
-  team2Player2 = signal('');
+  team1Players = signal<string[]>(['']);
+  team2Players = signal<string[]>(['']);
 
   previousTab() {
     if (this.selectedTab() > 0) {
@@ -63,12 +60,9 @@ export class NewGameDialogComponent {
       rounds: this.rounds(),
       points: this.usePointsLimit() ? this.points() : undefined,
       usePointLimit: this.usePointsLimit(),
-      team1Player1: this.team1Player1(),
-      team1Player2: this.team1Player2(),
-      team2Player1: this.team2Player1(),
-      team2Player2: this.team2Player2(),
+      team1Players: this.team1Players().filter((p) => p.trim() !== ''),
+      team2Players: this.team2Players().filter((p) => p.trim() !== ''),
     };
-
     this.dialogRef.close(config);
   }
 }
