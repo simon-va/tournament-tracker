@@ -2,76 +2,40 @@
 <mat-dialog-content>
   <div class="remove-tabs-header">
     <mat-tab-group
-      [selectedIndex]="selected()"
-      (selectedIndexChange)="selected.set($event)"
+      [selectedIndex]="selectedTab()"
+      (selectedIndexChange)="selectedTab.set($event)"
+      animationDuration="300ms"
     >
-      @for (tab of tabs; track tab; let index = $index) {
-        <mat-tab [label]="tab">
-          @if (index === 0) {
-            <div class="rounds-input">
-              <button
-                matIconButton
-                (click)="changeRounds(-1)"
-                [disabled]="rounds() <= 1"
-              >
-                <mat-icon>remove</mat-icon>
-              </button>
-              <div style="font-size: 2rem">{{ rounds() }}</div>
-              <button matIconButton (click)="changeRounds(1)">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-            <div>Anzahl Runden eintragen</div>
-          }
-
-          @if (index === 1) {
-            <mat-accordion>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title> Team 1 </mat-panel-title>
-                </mat-expansion-panel-header>
-                <div>
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Spieler 1</mat-label>
-                    <input matInput />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Spieler 2</mat-label>
-                    <input matInput />
-                  </mat-form-field>
-                </div>
-              </mat-expansion-panel>
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title> Team 2</mat-panel-title>
-                </mat-expansion-panel-header>
-                <div>
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Spieler 1</mat-label>
-                    <input matInput />
-                  </mat-form-field>
-                  <mat-form-field class="example-full-width">
-                    <mat-label>Spieler 2</mat-label>
-                    <input matInput />
-                  </mat-form-field>
-                </div>
-              </mat-expansion-panel>
-            </mat-accordion>
-          }
-        </mat-tab>
-      }
+      <mat-tab label="Runden">
+        <div class="tab-content">
+          <app-rounds-step [(rounds)]="rounds" (roundsSelected)="nextTab()" />
+        </div>
+      </mat-tab>
+      <mat-tab label="Spieler">
+        <div class="tab-content">
+          <app-players-step
+            [(team1Players)]="team1Players"
+            [(team2Players)]="team2Players"
+          />
+        </div>
+      </mat-tab>
+      <mat-tab label="Punkte">
+        <div class="tab-content">
+          <app-points-step
+            [(points)]="points"
+            [(usePointsLimit)]="usePointsLimit"
+            (pointsSelected)="nextTab()"
+          />
+        </div>
+      </mat-tab>
     </mat-tab-group>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions>
-  @if (selected() > 0) {
-    <button matButton (click)="switchTab(-1)">Zurück</button>
+<mat-dialog-actions align="end">
+  @if (selectedTab() > 0) {
+    <button mat-button (click)="previousTab()">Zurück</button>
   }
-  <button matButton (click)="switchTab(1)">
-    @if (selected() === tabs.length - 1) {
-      Fertig
-    } @else {
-      Weiter
-    }
+  <button mat-button (click)="nextTab()" color="primary">
+    {{ selectedTab() === 2 ? "Fertig" : "Weiter" }}
   </button>
 </mat-dialog-actions>

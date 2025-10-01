@@ -1,7 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FloatingButtonComponent } from '../../shared/floating-button/floatingButton';
 import { MatDialog } from '@angular/material/dialog';
-import { NewGameDialogComponent } from './new-game-dialog/newGameDialog';
+import {
+  GameConfig,
+  NewGameDialogComponent,
+} from './new-game-dialog/newGameDialog';
 
 @Component({
   selector: 'app-game-page',
@@ -11,7 +14,16 @@ import { NewGameDialogComponent } from './new-game-dialog/newGameDialog';
 export class GameComponent {
   readonly dialog = inject(MatDialog);
 
+  protected gameConfig = signal<GameConfig | undefined>(undefined);
+
   protected openDialog() {
-    this.dialog.open(NewGameDialogComponent);
+    const dialogRef = this.dialog.open(NewGameDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result: GameConfig) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.gameConfig.set(result);
+      }
+    });
   }
 }

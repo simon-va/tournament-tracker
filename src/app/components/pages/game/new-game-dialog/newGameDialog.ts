@@ -1,53 +1,68 @@
+// newGameDialog.ts
 import { Component, inject, signal } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { RoundsStepComponent } from './rounds-step/roundsStep';
+import { PlayersStepComponent } from './players-step/playersStep';
+import { PointsStepComponent } from './points-step/pointsStep';
+
+export interface GameConfig {
+  rounds: number;
+  points?: number;
+  usePointLimit: boolean;
+  team1Players: string[];
+  team2Players: string[];
+}
 
 @Component({
   selector: 'app-new-game-dialog',
-  templateUrl: './newGameDialog.html',
-  styleUrl: './newGameDialog.scss',
+  standalone: true,
   imports: [
     MatDialogModule,
     MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatTabsModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
+    RoundsStepComponent,
+    PlayersStepComponent,
+    PointsStepComponent,
   ],
+  templateUrl: './newGameDialog.html',
+  styleUrl: './newGameDialog.scss',
 })
 export class NewGameDialogComponent {
-  private dialogRef = inject(MatDialogRef<NewGameDialogComponent>);
+  private dialogRef = inject(MatDialogRef<NewGameDialogComponent, GameConfig>);
 
-  tabs = ['Runden', 'Spieler'];
-  selected = signal(0);
+  selectedTab = signal(0);
 
+  // Game configuration data
   rounds = signal(1);
+  points = signal(1);
+  usePointsLimit = signal(true);
+  team1Players = signal<string[]>(['']);
+  team2Players = signal<string[]>(['']);
 
-  protected switchTab(value: number) {
-    const newIndex = this.selected() + value;
-
-    if (newIndex < 0) {
-      return;
+  previousTab() {
+    if (this.selectedTab() > 0) {
+      this.selectedTab.update((tab) => tab - 1);
     }
-
-    if (newIndex > this.tabs.length - 1) {
-      this.dialogRef.close();
-
-      return;
-    }
-    this.selected.set(newIndex);
   }
 
-  protected changeRounds(value: number) {
-    this.rounds.update((rounds) => rounds + value);
+  nextTab() {
+    if (this.selectedTab() < 2) {
+      this.selectedTab.update((tab) => tab + 1);
+    } else {
+      this.closeDialog();
+    }
+  }
+
+  private closeDialog() {
+    const config: GameConfig = {
+      rounds: this.rounds(),
+      points: this.usePointsLimit() ? this.points() : undefined,
+      usePointLimit: this.usePointsLimit(),
+      team1Players: this.team1Players().filter((p) => p.trim() !== ''),
+      team2Players: this.team2Players().filter((p) => p.trim() !== ''),
+    };
+    this.dialogRef.close(config);
   }
 }
