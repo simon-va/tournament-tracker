@@ -1,0 +1,37 @@
+:host {
+  flex-shrink: 0; /* Verhindert Schrumpfen */
+  min-height: 3.5rem; /* 56px - gleich wie Header */
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow:
+    0 -4px 12px rgba(0, 0, 0, 0.15),
+    0 -2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  background-color: var(--mat-sys-on-secondary);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  color: #757575;
+  text-decoration: none;
+  min-width: 48px; /* Minimum Touch Target */
+  min-height: 48px;
+  cursor: pointer;
+  /* Verhindert Text-Selektion beim Tippen */
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.active {
+  background-color: var(--mat-sys-primary);
+
+  color: white;
+}
