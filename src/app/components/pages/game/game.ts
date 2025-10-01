@@ -12,6 +12,13 @@ export class GameComponent {
   readonly dialog = inject(MatDialog);
 
   protected openDialog() {
-    this.dialog.open(NewGameDialogComponent);
+    const dialogRef = this.dialog.open(NewGameDialogComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        console.log(result);
+      }
+    });
   }
 }
