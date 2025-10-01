@@ -3,7 +3,4 @@
   flex-direction: column;
   height: 100vh;
   height: 100dvh; /* Dynamic Viewport Height - besser für Mobile */
-  /* Safe Area für Notch/Home Indicator */
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
 }
