@@ -1,39 +1,41 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatIconModule } from '@angular/material/icon';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatChipsModule } from '@angular/material/chips';
+import { RoundsStepComponent } from './rounds-step/roundsStep.component';
+import { PlayersStepComponent } from './players-step/playersStep.component';
+import { PointsStepComponent } from './points-step/pointsStep.component';
+
+export interface GameConfig {
+  rounds: number;
+  points?: number;
+  usePointLimit: boolean;
+  team1Player1: string;
+  team1Player2: string;
+  team2Player1: string;
+  team2Player2: string;
+}
 
 @Component({
   selector: 'app-new-game-dialog',
-  templateUrl: './newGameDialog.html',
-  styleUrl: './newGameDialog.scss',
+  standalone: true,
   imports: [
     MatDialogModule,
     MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatTabsModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatSlideToggleModule,
-    MatChipsModule,
+    RoundsStepComponent,
+    PlayersStepComponent,
+    PointsStepComponent,
   ],
+  templateUrl: './newGameDialog.html',
+  styleUrl: './newGameDialog.scss',
 })
 export class NewGameDialogComponent {
   private dialogRef = inject(MatDialogRef<NewGameDialogComponent>);
 
-  tabs = ['Runden', 'Spieler', 'Punkte'];
-  selected = signal(0);
+  selectedTab = signal(0);
 
+  // Game configuration data
   rounds = signal(1);
   points = signal(1);
   usePointsLimit = signal(true);
@@ -42,48 +44,31 @@ export class NewGameDialogComponent {
   team2Player1 = signal('');
   team2Player2 = signal('');
 
-  protected switchTab(value: number) {
-    const newIndex = this.selected() + value;
-
-    if (newIndex < 0) {
-      return;
+  previousTab() {
+    if (this.selectedTab() > 0) {
+      this.selectedTab.update((tab) => tab - 1);
     }
+  }
 
-    if (newIndex > this.tabs.length - 1) {
-      this.dialogRef.close({
-        rounds: this.rounds(),
-        points: this.points(),
-        usePointLimit: this.usePointsLimit(),
-        team1Player1: this.team1Player1(),
-        team1Player2: this.team1Player2(),
-        team2Player1: this.team2Player1(),
-        team2Player2: this.team2Player2(),
-      });
-
-      return;
+  nextTab() {
+    if (this.selectedTab() < 2) {
+      this.selectedTab.update((tab) => tab + 1);
+    } else {
+      this.closeDialog();
     }
-    this.selected.set(newIndex);
   }
 
-  protected changeRounds(value: number) {
-    this.rounds.update((rounds) => rounds + value);
-  }
+  private closeDialog() {
+    const config: GameConfig = {
+      rounds: this.rounds(),
+      points: this.usePointsLimit() ? this.points() : undefined,
+      usePointLimit: this.usePointsLimit(),
+      team1Player1: this.team1Player1(),
+      team1Player2: this.team1Player2(),
+      team2Player1: this.team2Player1(),
+      team2Player2: this.team2Player2(),
+    };
 
-  protected changePoints(value: number) {
-    this.points.update((points) => points + value);
-  }
-
-  protected onRoundsToggleChange({ checked }: { checked: boolean }) {
-    this.usePointsLimit.set(checked);
-  }
-
-  protected setRounds(value: number) {
-    this.rounds.set(value);
-    this.switchTab(1);
-  }
-
-  protected setPoints(value: number) {
-    this.points.set(value);
-    this.switchTab(1);
+    this.dialogRef.close(config);
   }
 }

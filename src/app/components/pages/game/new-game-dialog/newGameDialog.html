@@ -2,118 +2,45 @@
 <mat-dialog-content>
   <div class="remove-tabs-header">
     <mat-tab-group
-      [selectedIndex]="selected()"
-      (selectedIndexChange)="selected.set($event)"
+      [selectedIndex]="selectedTab()"
+      (selectedIndexChange)="selectedTab.set($event)"
+      animationDuration="300ms"
     >
-      @for (tab of tabs; track tab; let index = $index) {
-        <mat-tab [label]="tab">
-          @if (index === 0) {
-            <div class="rounds-input">
-              <button
-                matIconButton
-                (click)="changeRounds(-1)"
-                [disabled]="rounds() <= 1"
-              >
-                <mat-icon>remove</mat-icon>
-              </button>
-              <div style="font-size: 2rem">{{ rounds() }}</div>
-              <button matIconButton (click)="changeRounds(1)">
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-            <mat-chip-set aria-label="Schnellwahl Punkte">
-              <mat-chip (click)="setRounds(3)">Best-Of 3</mat-chip>
-              <mat-chip (click)="setRounds(5)">Best-Of 5</mat-chip>
-              <mat-chip (click)="setRounds(7)">Best-Of 7</mat-chip>
-            </mat-chip-set>
-            <div>Anzahl Runden eintragen</div>
-          }
+      <mat-tab label="Runden">
+        <div class="tab-content">
+          <app-rounds-step [(rounds)]="rounds" (roundsSelected)="nextTab()" />
+        </div>
+      </mat-tab>
 
-          @if (index === 1) {
-            <div style="margin-bottom: 10px">
-              <mat-accordion>
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title> Team 1 </mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <div>
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Spieler 1</mat-label>
-                      <input matInput [(ngModel)]="team1Player1" />
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Spieler 2</mat-label>
-                      <input matInput [(ngModel)]="team1Player2" />
-                    </mat-form-field>
-                  </div>
-                </mat-expansion-panel>
-                <mat-expansion-panel>
-                  <mat-expansion-panel-header>
-                    <mat-panel-title> Team 2</mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <div>
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Spieler 1</mat-label>
-                      <input matInput [(ngModel)]="team2Player1" />
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                      <mat-label>Spieler 2</mat-label>
-                      <input matInput [(ngModel)]="team2Player2" />
-                    </mat-form-field>
-                  </div>
-                </mat-expansion-panel>
-              </mat-accordion>
-            </div>
-          }
+      <mat-tab label="Spieler">
+        <div class="tab-content">
+          <app-players-step
+            [(team1Player1)]="team1Player1"
+            [(team1Player2)]="team1Player2"
+            [(team2Player1)]="team2Player1"
+            [(team2Player2)]="team2Player2"
+          />
+        </div>
+      </mat-tab>
 
-          @if (index === 2) {
-            <div class="rounds-wrapper">
-              <div class="rounds-toggle">
-                <mat-slide-toggle
-                  labelPosition="before"
-                  [checked]="usePointsLimit()"
-                  (change)="onRoundsToggleChange($event)"
-                >
-                  Punkte limitieren
-                </mat-slide-toggle>
-              </div>
-              @if (usePointsLimit()) {
-                <div class="rounds-input">
-                  <button
-                    matIconButton
-                    (click)="changePoints(-1)"
-                    [disabled]="points() <= 1"
-                  >
-                    <mat-icon>remove</mat-icon>
-                  </button>
-                  <div style="font-size: 2rem">{{ points() }}</div>
-                  <button matIconButton (click)="changePoints(1)">
-                    <mat-icon>add</mat-icon>
-                  </button>
-                </div>
-                <mat-chip-set aria-label="Schnellwahl Punkte">
-                  <mat-chip (click)="setPoints(10)">10</mat-chip>
-                  <mat-chip (click)="setPoints(21)">21</mat-chip>
-                  <mat-chip (click)="setPoints(25)">25</mat-chip>
-                </mat-chip-set>
-                <div>Benötigte Punkte zum gewinnen.</div>
-              }
-            </div>
-          }
-        </mat-tab>
-      }
+      <mat-tab label="Punkte">
+        <div class="tab-content">
+          <app-points-step
+            [(points)]="points"
+            [(usePointsLimit)]="usePointsLimit"
+            (pointsSelected)="nextTab()"
+          />
+        </div>
+      </mat-tab>
     </mat-tab-group>
   </div>
 </mat-dialog-content>
-<mat-dialog-actions>
-  @if (selected() > 0) {
-    <button matButton (click)="switchTab(-1)">Zurück</button>
+
+<mat-dialog-actions align="end">
+  @if (selectedTab() > 0) {
+    <button mat-button (click)="previousTab()">Zurück</button>
   }
-  <button matButton (click)="switchTab(1)">
-    @if (selected() === tabs.length - 1) {
-      Fertig
-    } @else {
-      Weiter
-    }
+  <button mat-button (click)="nextTab()" color="primary">
+    {{ selectedTab() === 2 ? "Fertig" : "Weiter" }}
   </button>
 </mat-dialog-actions>
