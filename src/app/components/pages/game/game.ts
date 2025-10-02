@@ -5,11 +5,19 @@ import { NewGameDialogComponent } from './new-game-dialog/newGameDialog';
 import { NewGameConfig } from '../../../services/game.service';
 import { GameService } from '../../../services/game.service';
 import { RunnningGameComponent } from './running-game/runningGame';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-game-page',
   templateUrl: './game.html',
-  imports: [FloatingButtonComponent, RunnningGameComponent],
+  styleUrl: './game.scss',
+  imports: [
+    FloatingButtonComponent,
+    RunnningGameComponent,
+    MatCardModule,
+    MatIconModule,
+  ],
 })
 export class GameComponent {
   private readonly dialog = inject(MatDialog);
