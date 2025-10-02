@@ -1,1 +1,19 @@
-Statistiken
+<mat-accordion>
+  @for (game of sortedGames(); track game.id) {
+    @let gameItem = game.game;
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ game.completedAt.toLocaleString() }}
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>Gewinner: {{ getWinnerNames(gameItem) }}</div>
+      <div>Runden: {{ gameItem.rounds }}</div>
+      <div class="delete-button-wrapper">
+        <button matButton="filled" (click)="deleteEntry(game.id)">
+          Löschen
+        </button>
+      </div>
+    </mat-expansion-panel>
+  }
+</mat-accordion>
