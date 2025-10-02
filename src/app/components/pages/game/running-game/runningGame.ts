@@ -8,6 +8,7 @@ import { CounterComponent } from '../../../shared/counter/counter';
 import { GameService } from '../../../../services/game.service';
 import { MatIconModule } from '@angular/material/icon';
 import { GameHistoryService } from '../../../../services/gameHistory';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-running-game',
@@ -23,6 +24,7 @@ import { GameHistoryService } from '../../../../services/gameHistory';
     CounterComponent,
     MatButtonModule,
     MatIconModule,
+    MatDividerModule,
   ],
 })
 export class RunnningGameComponent {

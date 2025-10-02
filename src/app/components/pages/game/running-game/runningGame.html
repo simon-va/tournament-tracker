@@ -3,6 +3,7 @@
     @for (round of game.roundsToPlay; track $index) {
       <mat-step>
         <ng-template matStepLabel>Runde {{ $index + 1 }}</ng-template>
+        <strong>Team 1</strong>
         <div class="team-points">
           <app-counter
             [ngModel]="getRoundPoints($index, 'team1')"
@@ -22,7 +23,8 @@
             </div>
           }
         </div>
-        <div>VS</div>
+        <mat-divider></mat-divider>
+        <strong>Team 2</strong>
         <div class="team-points">
           <app-counter
             [ngModel]="getRoundPoints($index, 'team2')"
