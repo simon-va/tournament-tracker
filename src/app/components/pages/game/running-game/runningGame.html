@@ -12,17 +12,16 @@
                 (ngModelChange)="updateRoundPoints($index, 'team1', $event)"
                 [minNumber]="0"
               />
-              @if (runningGame()?.usePointLimit) {
+              @if (game?.usePointLimit) {
                 <div class="fast-end">
                   <button
                     mat-icon-button
-                    (click)="
-                      updateRoundPoints(
-                        $index,
-                        'team1',
-                        runningGame()?.points ?? 0
-                      )
-                    "
+                    (click)="setWinner($index, 'team1', game?.points ?? 0)"
+                    [disabled]="round.winnerTeamId"
+                    [ngClass]="{
+                      'button-disabled':
+                        round.winnerTeamId && round.winnerTeamId !== 1,
+                    }"
                   >
                     <mat-icon fontIcon="celebration"></mat-icon>
                   </button>
@@ -37,17 +36,16 @@
                 (ngModelChange)="updateRoundPoints($index, 'team2', $event)"
                 [minNumber]="0"
               />
-              @if (runningGame()?.usePointLimit) {
+              @if (game?.usePointLimit) {
                 <div class="fast-end">
                   <button
                     mat-icon-button
-                    (click)="
-                      updateRoundPoints(
-                        $index,
-                        'team2',
-                        runningGame()?.points ?? 0
-                      )
-                    "
+                    (click)="setWinner($index, 'team2', game?.points ?? 0)"
+                    [disabled]="round.winnerTeamId"
+                    [ngClass]="{
+                      'button-disabled':
+                        round.winnerTeamId && round.winnerTeamId !== 2,
+                    }"
                   >
                     <mat-icon fontIcon="celebration"></mat-icon>
                   </button>

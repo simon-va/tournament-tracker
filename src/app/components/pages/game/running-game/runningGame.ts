@@ -11,6 +11,7 @@ import { GameHistoryService } from '../../../../services/gameHistory';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { GameSettingsComponent } from './game-settings/gameSettings';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-running-game',
@@ -29,6 +30,7 @@ import { GameSettingsComponent } from './game-settings/gameSettings';
     MatDividerModule,
     MatTabsModule,
     GameSettingsComponent,
+    CommonModule,
   ],
 })
 export class RunnningGameComponent {
@@ -36,6 +38,15 @@ export class RunnningGameComponent {
   private readonly gameHistoryService = inject(GameHistoryService);
 
   protected runningGame = this.gameService.runningGame;
+
+  protected setWinner(
+    roundIndex: number,
+    team: 'team1' | 'team2',
+    points: number,
+  ) {
+    this.updateRoundPoints(roundIndex, team, points);
+    this.gameService.setWinner(roundIndex, team);
+  }
 
   protected updateRoundPoints(
     roundIndex: number,
