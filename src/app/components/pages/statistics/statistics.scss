@@ -12,3 +12,27 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #666;
+}
+
+.empty-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  color: #ccc;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
