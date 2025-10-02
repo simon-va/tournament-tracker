@@ -6,14 +6,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { RoundsStepComponent } from './rounds-step/roundsStep';
 import { PlayersStepComponent } from './players-step/playersStep';
 import { PointsStepComponent } from './points-step/pointsStep';
-
-export interface GameConfig {
-  rounds: number;
-  points?: number;
-  usePointLimit: boolean;
-  team1Players: string[];
-  team2Players: string[];
-}
+import { NewGameConfig } from '../../../../services/game.service';
 
 @Component({
   selector: 'app-new-game-dialog',
@@ -30,7 +23,9 @@ export interface GameConfig {
   styleUrl: './newGameDialog.scss',
 })
 export class NewGameDialogComponent {
-  private dialogRef = inject(MatDialogRef<NewGameDialogComponent, GameConfig>);
+  private dialogRef = inject(
+    MatDialogRef<NewGameDialogComponent, NewGameConfig>,
+  );
 
   selectedTab = signal(0);
 
@@ -56,7 +51,7 @@ export class NewGameDialogComponent {
   }
 
   private closeDialog() {
-    const config: GameConfig = {
+    const config: NewGameConfig = {
       rounds: this.rounds(),
       points: this.usePointsLimit() ? this.points() : undefined,
       usePointLimit: this.usePointsLimit(),

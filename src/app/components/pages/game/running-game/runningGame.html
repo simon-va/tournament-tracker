@@ -1,0 +1,11 @@
+<mat-stepper orientation="vertical" #stepper>
+  <mat-step>
+    <ng-template matStepLabel>Runde 1</ng-template>
+    <app-counter [(ngModel)]="number1" [minNumber]="0" />
+    <div>VS</div>
+    <app-counter [(ngModel)]="number2" [minNumber]="0" />
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Runde 2</ng-template>
+  </mat-step>
+</mat-stepper>
