@@ -5,11 +5,21 @@
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
-            {{ game.completedAt.toLocaleString() }}
+            {{ formatDate(game.completedAt) }}
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <div>Gewinner: {{ getWinnerNames(gameItem) }}</div>
+        <div>
+          Gewinner: <strong>{{ getWinnerNames(gameItem) }}</strong>
+        </div>
         <div>Runden: {{ gameItem.rounds }}</div>
+        <mat-divider></mat-divider>
+        <div style="margin: 1rem 0">
+          <strong>Team 1</strong>
+          <div>{{ getWinnerNames(gameItem, 1) }}</div>
+          <strong>Team 2</strong>
+          <div>{{ getWinnerNames(gameItem, 2) }}</div>
+        </div>
+
         <div class="delete-button-wrapper">
           <button matButton="filled" (click)="deleteEntry(game.id)">
             Löschen
