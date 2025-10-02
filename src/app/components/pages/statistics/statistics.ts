@@ -3,12 +3,14 @@ import { GameHistoryService } from '../../../services/gameHistory';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatButtonModule } from '@angular/material/button';
 import { RunningGameConfig } from '../../../services/game.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-statistics-page',
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss',
-  imports: [MatExpansionModule, MatButtonModule],
+  imports: [MatExpansionModule, MatButtonModule, MatCardModule, MatIconModule],
 })
 export class StatisticsComponent {
   private readonly gameHistoryService = inject(GameHistoryService);

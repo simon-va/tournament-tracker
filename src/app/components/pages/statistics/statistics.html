@@ -1,19 +1,31 @@
-<mat-accordion>
-  @for (game of sortedGames(); track game.id) {
-    @let gameItem = game.game;
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ game.completedAt.toLocaleString() }}
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <div>Gewinner: {{ getWinnerNames(gameItem) }}</div>
-      <div>Runden: {{ gameItem.rounds }}</div>
-      <div class="delete-button-wrapper">
-        <button matButton="filled" (click)="deleteEntry(game.id)">
-          Löschen
-        </button>
+@if (sortedGames().length > 0) {
+  <mat-accordion>
+    @for (game of sortedGames(); track game.id) {
+      @let gameItem = game.game;
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ game.completedAt.toLocaleString() }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div>Gewinner: {{ getWinnerNames(gameItem) }}</div>
+        <div>Runden: {{ gameItem.rounds }}</div>
+        <div class="delete-button-wrapper">
+          <button matButton="filled" (click)="deleteEntry(game.id)">
+            Löschen
+          </button>
+        </div>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+} @else {
+  <mat-card class="empty-state-card">
+    <mat-card-content>
+      <div class="empty-state">
+        <mat-icon class="empty-icon">bar_chart</mat-icon>
+        <h3>Keine vergangenen Spiele</h3>
+        <p>Spiele ein Spiel, um Statistiken einsehen zu können</p>
       </div>
-    </mat-expansion-panel>
-  }
-</mat-accordion>
+    </mat-card-content>
+  </mat-card>
+}
