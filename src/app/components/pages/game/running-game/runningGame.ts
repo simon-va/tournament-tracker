@@ -9,6 +9,8 @@ import { GameService } from '../../../../services/game.service';
 import { MatIconModule } from '@angular/material/icon';
 import { GameHistoryService } from '../../../../services/gameHistory';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTabsModule } from '@angular/material/tabs';
+import { GameSettingsComponent } from './game-settings/gameSettings';
 
 @Component({
   selector: 'app-running-game',
@@ -25,6 +27,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    MatTabsModule,
+    GameSettingsComponent,
   ],
 })
 export class RunnningGameComponent {

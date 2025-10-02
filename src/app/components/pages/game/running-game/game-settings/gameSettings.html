@@ -1,0 +1,11 @@
+<h3>Runden</h3>
+<app-counter [(ngModel)]="rounds" [minNumber]="1" disabled />
+<mat-divider></mat-divider>
+<h3>Punkte zum Gewinnen</h3>
+<app-counter [(ngModel)]="points" [minNumber]="1" disabled />
+<mat-divider></mat-divider>
+<h3>Spieler</h3>
+<strong>Team 1</strong>
+<div>{{ getTeamMembers(1) }}</div>
+<strong>Team 2</strong>
+<div>{{ getTeamMembers(2) }}</div>
