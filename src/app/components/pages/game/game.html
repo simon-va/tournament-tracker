@@ -1,4 +1,14 @@
 @if (gameService.runningGame()) {
   <app-running-game />
+} @else {
+  <mat-card class="empty-state-card">
+    <mat-card-content>
+      <div class="empty-state">
+        <mat-icon class="empty-icon">stadium</mat-icon>
+        <h3>Kein laufendes Spiel</h3>
+        <p>Starte ein neues Spiel über den + Button</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
 }
 <app-floating-button icon="add" (handleClick)="openDialog()" />
