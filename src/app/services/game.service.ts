@@ -14,6 +14,7 @@ export interface RunningGameConfig extends NewGameConfig {
   roundsToPlay: {
     team1Points: number;
     team2Points: number;
+    winnerTeamId?: number;
   }[];
 }
 
@@ -42,7 +43,6 @@ export class GameService {
     this._runningGame.set(undefined);
   }
 
-  // Neue Methode zum Aktualisieren der Punkte für eine bestimmte Runde
   public updateRoundPoints(
     roundIndex: number,
     team: 'team1' | 'team2',
@@ -55,6 +55,22 @@ export class GameService {
     updatedRounds[roundIndex] = {
       ...updatedRounds[roundIndex],
       [team === 'team1' ? 'team1Points' : 'team2Points']: points,
+    };
+
+    this._runningGame.set({
+      ...currentGame,
+      roundsToPlay: updatedRounds,
+    });
+  }
+
+  public setWinner(roundIndex: number, team: 'team1' | 'team2') {
+    const currentGame = this._runningGame();
+    if (!currentGame || !currentGame.roundsToPlay[roundIndex]) return;
+
+    const updatedRounds = [...currentGame.roundsToPlay];
+    updatedRounds[roundIndex] = {
+      ...updatedRounds[roundIndex],
+      winnerTeamId: team === 'team1' ? 1 : 2,
     };
 
     this._runningGame.set({
