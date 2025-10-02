@@ -1,11 +1,48 @@
 <mat-stepper orientation="vertical" #stepper>
-  <mat-step>
-    <ng-template matStepLabel>Runde 1</ng-template>
-    <app-counter [(ngModel)]="number1" [minNumber]="0" />
-    <div>VS</div>
-    <app-counter [(ngModel)]="number2" [minNumber]="0" />
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Runde 2</ng-template>
-  </mat-step>
+  @if (runningGame(); as game) {
+    @for (round of game.roundsToPlay; track $index) {
+      <mat-step>
+        <ng-template matStepLabel>Runde {{ $index + 1 }}</ng-template>
+        <div class="team-points">
+          <app-counter
+            [ngModel]="getRoundPoints($index, 'team1')"
+            (ngModelChange)="updateRoundPoints($index, 'team1', $event)"
+            [minNumber]="0"
+          />
+          @if (runningGame()?.usePointLimit) {
+            <div class="fast-end">
+              <button
+                mat-icon-button
+                (click)="
+                  updateRoundPoints($index, 'team1', runningGame()?.points ?? 0)
+                "
+              >
+                <mat-icon fontIcon="celebration"></mat-icon>
+              </button>
+            </div>
+          }
+        </div>
+        <div>VS</div>
+        <div class="team-points">
+          <app-counter
+            [ngModel]="getRoundPoints($index, 'team2')"
+            (ngModelChange)="updateRoundPoints($index, 'team2', $event)"
+            [minNumber]="0"
+          />
+          @if (runningGame()?.usePointLimit) {
+            <div class="fast-end">
+              <button
+                mat-icon-button
+                (click)="
+                  updateRoundPoints($index, 'team2', runningGame()?.points ?? 0)
+                "
+              >
+                <mat-icon fontIcon="celebration"></mat-icon>
+              </button>
+            </div>
+          }
+        </div>
+      </mat-step>
+    }
+  }
 </mat-stepper>

@@ -1,3 +1,4 @@
+// game.service.ts
 import { Injectable, effect } from '@angular/core';
 import { signal } from '@angular/core';
 
@@ -21,11 +22,9 @@ export interface RunningGameConfig extends NewGameConfig {
 })
 export class GameService {
   private readonly STORAGE_KEY = 'runningGame';
-
   private readonly _runningGame = signal<RunningGameConfig | undefined>(
     this.loadGameFromStorage(),
   );
-
   public runningGame = this._runningGame.asReadonly();
 
   constructor() {
@@ -43,7 +42,28 @@ export class GameService {
     this._runningGame.set(undefined);
   }
 
-  private saveGameToStorage(game: NewGameConfig | undefined): void {
+  // Neue Methode zum Aktualisieren der Punkte für eine bestimmte Runde
+  public updateRoundPoints(
+    roundIndex: number,
+    team: 'team1' | 'team2',
+    points: number,
+  ) {
+    const currentGame = this._runningGame();
+    if (!currentGame || !currentGame.roundsToPlay[roundIndex]) return;
+
+    const updatedRounds = [...currentGame.roundsToPlay];
+    updatedRounds[roundIndex] = {
+      ...updatedRounds[roundIndex],
+      [team === 'team1' ? 'team1Points' : 'team2Points']: points,
+    };
+
+    this._runningGame.set({
+      ...currentGame,
+      roundsToPlay: updatedRounds,
+    });
+  }
+
+  private saveGameToStorage(game: RunningGameConfig | undefined): void {
     try {
       if (game) {
         localStorage.setItem(this.STORAGE_KEY, JSON.stringify(game));
