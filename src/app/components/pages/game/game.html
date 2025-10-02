@@ -1,7 +1,4 @@
-<div>Spiel</div>
-@if (gameConfig(); as gameConfig) {
-  <div>{{ gameConfig.points }}</div>
-  <div>{{ gameConfig.rounds }}</div>
-  <div>{{ gameConfig.usePointLimit }}</div>
+@if (gameService.runningGame()) {
+  <app-running-game />
 }
 <app-floating-button icon="add" (handleClick)="openDialog()" />

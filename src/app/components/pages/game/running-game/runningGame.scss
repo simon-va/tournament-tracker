@@ -1,0 +1,16 @@
+@use "@angular/material" as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+.fast-end {
+  @include mat.icon-overrides(
+    (
+      color: var(--mat-sys-primary),
+    )
+  );
+}
+
+.team-points {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
